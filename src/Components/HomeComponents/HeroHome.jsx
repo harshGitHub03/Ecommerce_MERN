@@ -11,7 +11,7 @@ function HeroHome() {
                 <h4 className='text-gray-800 font-medium text-xl'>Trade-in-offer</h4>
                 <h3 className='text-6xl font-semibold'>Super value deals<br /><h3 className='text-[#088178]'>On all products</h3></h3>
                 <p className='text-lg mt-2 text-gray-500'>Save more with coupons & up to 70% off!</p>
-                <Link to='/shop' ><button className="bg-[url('/src/assets/homeAssets/heroSection/buttonBg.png')] text-[#088178] font-bold w-52 mt-3 py-3 bg-no-repeat bg-cover bg-center">
+                <Link to='/shop' className='w-fit'><button className="bg-[url('/src/assets/homeAssets/heroSection/buttonBg.png')] text-[#088178] font-bold w-52 mt-3 py-3 bg-no-repeat bg-cover bg-center">
                     Shop Now
                 </button></Link>
             </div>

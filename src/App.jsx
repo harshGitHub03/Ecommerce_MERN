@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
 
-import { useDispatch } from 'react-redux'
-import { fetchApi } from './reduxToolkit/slices/productsSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Home from './Pages/Home'
 import Blog from './Pages/Blog'
@@ -15,29 +14,34 @@ import ProductDetail from './Pages/ProductDetail'
 import Cart from './Pages/Cart'
 import ErrorComp from './Components/Error&LoadingComponents/ErrorComp'
 import ScrollToTop from './Components/ScrollToTop'
-import LoginContainer from './Components/LoginPages.jsx/LoginContainer'
+import { addToCart, decrementQuantity, incrementQuantity, removeFromCart } from './reduxToolkit/thunks/cartThunks'
+
+import Profile from './Pages/Profile'
 
 // react popup / toastify imports
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { verifyAuthToken } from './reduxToolkit/thunks/authThunks'
+import Login from './Components/LoginPages.jsx/forms/Login'
+import Registration from './Components/LoginPages.jsx/forms/Registration'
+import { fetchTotalProducts } from './reduxToolkit/thunks/productsThunk'
+
 
 function App() {
   const dispatch = useDispatch()
-
-  // show||hide sign up form
-  const [signUpDisplay, setSignUpDisplay] = useState(false)
-
+  
   useEffect(() => {
-    dispatch(fetchApi())
+    dispatch(verifyAuthToken())
+    dispatch(fetchTotalProducts())
   }, [])
 
   return (
     <>
       {/* React docs component to NavLink page from top*/}
       <ScrollToTop />
+      <Navbar />
 
-      <Navbar setSignUpDisplay={setSignUpDisplay} />
       <Routes>
         <Route path='/' element={<Home />}></Route>
         <Route path='shop' element={<Shop />}></Route>
@@ -46,26 +50,27 @@ function App() {
         <Route path='/contact' element={<Contact />}></Route>
         <Route path='/cart' element={<Cart />}></Route>
         <Route path='/shop/:productId' element={<ProductDetail />}></Route>
+        <Route path='/login' element={<Login />}></Route>
+        <Route path='/register' element={<Registration />}></Route>
+
+        {/* for sub routes of profile page as well */}
+        <Route path='/profile/*' element={<Profile />}></Route>
 
         {/* error page if trying to access wrong page on URL */}
         <Route path='*' element={<ErrorComp />}></Route>
-
       </Routes>
       <Footer />
 
-      {/* show||hide signUp  */}
-      {signUpDisplay ===true? <LoginContainer setSignUpDisplay={setSignUpDisplay} /> : null}
-
 
       <ToastContainer
-          position="bottom-left"
-          autoClose={800}
-          hideProgressBar={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          theme="light"
-          transition:Bounce
+        position="bottom-left"
+        autoClose={1000}
+        hideProgressBar={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="light"
+        transition:Bounce
         />
     </>
   )

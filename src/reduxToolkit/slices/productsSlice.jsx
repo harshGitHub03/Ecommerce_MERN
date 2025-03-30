@@ -1,10 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { fetchTotalProducts } from "../thunks/productsThunk";
 
-
-export const fetchApi = createAsyncThunk("fetchApi", async () => {
-    const api = await fetch('https://fakestoreapi.com/products')
-    return api.json()
-})
 
 const productsData = createSlice({
     name: 'productData',
@@ -14,15 +10,15 @@ const productsData = createSlice({
         error: false
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchApi.fulfilled, (state, action) => {
+        builder.addCase(fetchTotalProducts.fulfilled, (state, action) => {
             state.loading = false
             state.data = action.payload
         });
-        builder.addCase(fetchApi.rejected, (state, action) => {
+        builder.addCase(fetchTotalProducts.rejected, (state, action) => {
             state.loading = false
             state.error = true
         });
-        builder.addCase(fetchApi.pending, (state, action) => {
+        builder.addCase(fetchTotalProducts.pending, (state, action) => {
             state.loading = true
         })
     }

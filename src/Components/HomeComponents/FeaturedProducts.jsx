@@ -2,12 +2,20 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import LoadingComp from '../Error&LoadingComponents/LoadingComp'
 import { addCart } from '../../reduxToolkit/slices/cartSlice'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { addToCart } from '../../reduxToolkit/thunks/cartThunks'
 
 function FeaturedProducts() {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     // products data from fetched api through reduc toolkit
-    const { data, loading } = useSelector((state) => state.productsData)
+    const { data, loading } = useSelector((state) => state.productsData);
+
+
+    //dispatch add to cart thunk
+    const addToCartHandler = (productDetails) => {
+        dispatch(addToCart({ productDetails, navigate }));
+    }
 
     return (
         <div className=' py-20  px-[7vw] bg-[#e3e6f382]'>
@@ -20,7 +28,7 @@ function FeaturedProducts() {
                 : <>
                     <div className='flex flex-wrap  gap-6 gap-y-12 mt-16 justify-around'>
                         {
-                            data.map((element,i) => {
+                            data.map((element, i) => {
                                 return element.id > 16 && element.id <= 20 ?
                                     <Link key={i} to={`/shop/${element.id}`}>
                                         <div className='w-[17rem] max-sm:w-[17rem] bg-white shadow-xl hover:shadow-2xl px-4 pt-5 pb-3 border-[#cce7d0] rounded-3xl border flex items-center flex-col'>
@@ -37,7 +45,7 @@ function FeaturedProducts() {
                                                 </div>
                                                 <div className='flex justify-between my-1 items-center'>
                                                     <h3 className='text-xl font-bold text-[#088178]'><i class="fa-solid fa-dollar-sign text-xl mr-[0.2rem]"></i>{element.price}</h3>
-                                                    <Link><button onClick={() => dispatch(addCart(element))} className='outline-none active:bg-[#ceffd5e8] hover:scale-110 h-[43px] w-[43px] text-[#088178] rounded-full text-center bg-[#e8f6ea] mr-2'><i className="fa-solid fa-cart-arrow-down"></i></button></Link>
+                                                    <Link><button onClick={() => addToCartHandler({ product_id: element.id, quantity: 1, price: element.price })} className='outline-none active:bg-[#ceffd5e8] hover:scale-110 h-[43px] w-[43px] text-[#088178] rounded-full text-center bg-[#e8f6ea] mr-2'><i className="fa-solid fa-cart-arrow-down"></i></button></Link>
                                                 </div>
                                             </div>
                                         </div>

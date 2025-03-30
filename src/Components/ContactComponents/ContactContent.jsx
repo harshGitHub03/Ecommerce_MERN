@@ -1,8 +1,33 @@
-import React from 'react'
+import React, { useDebugValue, useEffect } from 'react'
 import person1 from '../../assets/contactAssets/person1.png'
 import person2 from '../../assets/contactAssets/person2.png'
 import person3 from '../../assets/contactAssets/person3.png'
+
+import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { contactFormThunk } from '../../reduxToolkit/thunks/contactFormThunk';
+import { useNavigate } from 'react-router-dom';
+
 function ContactContent() {
+    const { register, handleSubmit } = useForm();
+    const dispatch = useDispatch();
+    const { errors, loading } = useSelector((state) => (state.contactForm))
+    useEffect(() => {
+        console.log(errors)
+    }, [errors])
+    const navigate = useNavigate();
+
+    const nameError = Array.isArray(errors) ? errors.find(ele => ele.path === "name") : null;
+    console.log("name", Array.isArray(errors))
+    const emailError = Array.isArray(errors) ? errors.find(ele => ele.path === "email") : null;
+    const subjectError = Array.isArray(errors) ? errors.find(ele => ele.path === "subject") : null;
+    const messageError = Array.isArray(errors) ? errors.find(ele => ele.path === "message") : null;
+
+    const handleForm = async (data) => {
+        dispatch(contactFormThunk({ formData: data, navigate }))
+    }
+
     return (
         <div className='px-[7vw] py-[6vw] md:py-[5vw]'>
             <div className='flex max-md:flex-wrap max-md:gap-4 justify-around items-center'>
@@ -24,11 +49,23 @@ function ContactContent() {
                 <div className='justify-self-start flex flex-col gap-2'>
                     <h5>LEAVE A MESSAGE</h5>
                     <h3 className='text-4xl font-medium mb-3'>We love to hear from you!</h3>
-                    <form onSubmit={()=>alert("Thanks! we'll replay quick.")} className=' flex flex-col gap-4 max-sm:w-full max-md:w-[50vw] w-[40vw]'>
-                        <input type="text" required className='p-2 border-gray-200 border outline-none' placeholder='Your Name' />
-                        <input type="text" required className='p-2 border-gray-200 border outline-none' placeholder='E-mail' />
-                        <input type="text" className='p-2 border-gray-200 border outline-none' placeholder='Subject' />
-                        <textarea required className='p-2 h-[8rem] border-gray-200 border outline-none' placeholder='Your Message' />
+                    <form onSubmit={handleSubmit(handleForm)} className=' flex flex-col gap-4 max-sm:w-full max-md:w-[50vw] w-[40vw]'>
+                        <label>
+                            <input type="text" {...register("name")} required className={`${nameError ? "border-b-red-600 border-b-2" : ""} p-2 border-gray-200 w-full border outline-none`} placeholder='Your Name' />
+                            <p className='text-red-600 text-sm'>{nameError?.msg || null}</p>
+                        </label>
+                        <label>
+                            <input type="text" {...register("email")} required className={`${emailError ? "border-b-red-600 border-b-2" : ""} p-2 w-full border-gray-200 border outline-none`} placeholder='E-mail' />
+                            <p className='text-red-600 text-sm'>{emailError?.msg || null}</p>
+                        </label>
+                        <label>
+                        <input type="text" {...register("subject")} className={`${subjectError ? "border-b-red-600 border-b-2" : ""} p-2 border-gray-200 border outline-none w-full`} placeholder='Subject' />
+                            <p className='text-red-600 text-sm'>{subjectError?.msg || null}</p>
+                        </label>
+                        <label>
+                        <textarea required {...register("message")} className={`${subjectError ? "border-b-red-600 border-b-2" : ""} p-2 h-[8rem] border-gray-200 border outline-none w-full`} placeholder='Your Message' />
+                            <p className='text-red-600 text-sm'>{messageError?.msg || null}</p>
+                        </label>
                         <button className='text-xl hover:bg-gray-700 active:bg-gray-500 font-medium px-5 py-2 w-fit bg-gray-600 text-white'>Submit</button>
                     </form>
                 </div>
@@ -66,13 +103,13 @@ function ContactContent() {
                     <tr className=' mt-[1rem]'>
 
                         <td><h3 className=' mb-3 text-gray-500  text-lg font-semibold'>Follow <span className='text-black'>Cara</span> on</h3>
-                        <ul className='flex  text-lg'>
-                            <li><i class="hover:scale-110 active:text-blue-500 p-2 pl-0 fa-brands fa-facebook-f"></i></li>
-                            <li><i class="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-twitter"></i></li>
-                            <li><i class="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-instagram"></i></li>
-                            <li><i class="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-pinterest-p"></i></li>
-                            <li><i class="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-youtube"></i></li>
-                        </ul>
+                            <ul className='flex  text-lg'>
+                                <li><i class="hover:scale-110 active:text-blue-500 p-2 pl-0 fa-brands fa-facebook-f"></i></li>
+                                <li><i class="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-twitter"></i></li>
+                                <li><i class="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-instagram"></i></li>
+                                <li><i class="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-pinterest-p"></i></li>
+                                <li><i class="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-youtube"></i></li>
+                            </ul>
                         </td>
                     </tr>
                 </table>

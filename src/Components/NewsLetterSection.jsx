@@ -8,8 +8,8 @@ function NewsLetterSection() {
         <p className='max-md:text-base mt-1 max-md:leading-5 text-lg font-medium gap-2'>Get E-mail updates about our latest shop and <span className='text-orange-400'>special offers.</span>  </p>
         </div>
         <form onSubmit={()=>alert("Welcome Subscriber!, we'll update you with our newsletters!")} className='flex'>
-            <input type="text" required className='md:w-[22vw] px-3 round-left-top rounded-l py-2 outline-none text-black'/>
-            <button className='px-6 font-semibold rounded-r hover:bg-[#16837b] active:bg-[#0c544f] py-2 bg-[#08726a]'>Sign Up</button>
+            {/* <input type="text" required className='md:w-[22vw] px-3 round-left-top rounded-l py-2 outline-none text-black'/> */}
+            <button className='px-6 font-semibold rounded hover:bg-[#16837b] active:bg-[#0c544f] py-2 bg-[#08726a]'>Sign Up</button>
         </form>
     </div>
   )

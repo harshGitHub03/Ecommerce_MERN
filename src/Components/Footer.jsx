@@ -1,11 +1,14 @@
 import React from 'react'
 import NewsLetterSection from './NewsLetterSection'
+import { useSelector } from 'react-redux'
 
 function Footer() {
+    const { isAuthenticated } = useSelector(state => state.authData)
     return (<>
-        <NewsLetterSection />
+    {/* if user sign in hide news letter component */}
+        {!isAuthenticated ? <NewsLetterSection /> : null}
 
-        <div className='flex flex-col gap-9 w-full  px-[7vw] pt-12 pb-4'>
+        <div className='bg-[#e3e6f361] flex flex-col gap-9 w-full  px-[7vw] pt-12 pb-4'>
             <div className=' flex justify-between flex-wrap gap-2 gap-y-8 '>
 
                 <div className='flex flex-col gap-8 text-gray-800'>
@@ -21,8 +24,8 @@ function Footer() {
                     <div>
                         <h3 className='mb-3 text-lg font-semibold'>Follow Us</h3>
                         <ul className='flex text-lg'>
-                        <li>
-                            <i className="hover:scale-110 pl-0 active:text-blue-500 p-2 fa-brands fa-facebook-f"></i></li>
+                            <li>
+                                <i className="hover:scale-110 pl-0 active:text-blue-500 p-2 fa-brands fa-facebook-f"></i></li>
                             <li><i className="hover:scale-110 active:text-blue-500 p-2 fa-brands fa-twitter"></i></li>
                             <li><i className="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-instagram"></i></li>
                             <li><i className="hover:scale-110 active:text-blue-500 p-2  fa-brands fa-pinterest-p"></i></li>

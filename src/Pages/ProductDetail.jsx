@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { addCart } from '../reduxToolkit/slices/cartSlice'
 import LoadingComp from '../Components/Error&LoadingComponents/LoadingComp'
 import NewArrivals from '../Components/HomeComponents/NewArrivals'
+import { addToCart } from '../reduxToolkit/thunks/cartThunks'
 
 function ProductDetail() {
     //dynamic routing to get id
@@ -12,7 +13,13 @@ function ProductDetail() {
     //get product data
     const productData = useSelector(state => state.productsData.data[productId - 1])
     const loading = useSelector(state => state.productsData.loading)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    //dispatch add to cart thunk
+    const addToCartHandler = (productDetails) => {
+        dispatch(addToCart({ productDetails, navigate }));
+    }
 
     return (<>
         {loading ? <LoadingComp />
@@ -30,15 +37,15 @@ function ProductDetail() {
                                 <h5 className='text-xl font-medium pr-2'><i class="fa-solid fa-star text-orange-400"></i> {productData.rating.rate}</h5>
                             </div>
                             <h5 className='text-4xl pb-1 font-semibold'>${productData.price}</h5>
-                            <button onClick={() => dispatch(addCart(productData))} className='px-6 select-none font-semibold rounded hover:bg-[#16837b] active:bg-[#0c544f] text-white py-2 bg-[#08726a]'>Add to Cart</button>
+                            <button onClick={() => addToCartHandler({ product_id: productData.id, quantity: 1, price: productData.price })}  className='px-6 select-none font-semibold rounded hover:bg-[#16837b] active:bg-[#0c544f] text-white py-2 bg-[#08726a]'>Add to Cart</button>
                             <h5 className='text-2xl pt-2 font-semibold'>Product Details</h5>
                             <p className=''>{productData.description}</p>
                         </div>
 
                     </div>
                 </div>
-                
-                <hr className='mx-[8vw] mt-10 border'/>
+
+                <hr className='mx-[8vw] mt-10 border' />
                 <NewArrivals bg='#ffffff82' />
             </>
         }</>)

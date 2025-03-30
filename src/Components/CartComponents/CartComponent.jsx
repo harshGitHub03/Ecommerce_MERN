@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { removeFromCart, decrementItem, incrementItem, getTotal } from '../../reduxToolkit/slices/cartSlice'
-
+import { decrementItem, incrementItem, getTotal } from '../../reduxToolkit/slices/cartSlice'
+import { decrementQuantity, incrementQuantity, removeFromCart } from '../../reduxToolkit/thunks/cartThunks'
 
 function CartComponent({ setPaymentDisplay }) {
     const dispatch = useDispatch()
     const { cart, totalAmount } = useSelector(state => state.cartData)
+    const { data } = useSelector((state) => state.productsData)
 
     //updateTotalAmount on cartData Change
     useEffect(() => {
         dispatch(getTotal())
+        console.log(cart)
     }, [cart])
 
     return (
@@ -30,29 +32,35 @@ function CartComponent({ setPaymentDisplay }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {cart?.map((element,i) => {
-                                return <tr key={i}>
-                                    <NavLink to={`/shop/${element.id}`}><td className='flex items-center gap-3 my-6'>
-                                        <div className='h-[7rem] max-md:h-[6rem] max-md:w-[6rem] w-[7rem] flex justify-center max-md:p-1 p-2 border-2'><img src={element?.image} className='object-contain object-center w-full' alt="" /></div>
-                                        <div>
-                                            <h4 className='max-sm:text-base max-sm:leading-5 text-lg font-medium w-[30vw] line-clamp-2'>{element?.title}</h4>
-                                            <h5 className='max-sm:leading-5 font-medium text-gray-600'>{element?.category}</h5>
+                            {cart?.map((element, i) => {
+                                const matchedProducts = data?.find((dataElement) => dataElement.id == element.product_id)
 
-                                        </div>
-                                    </td>
-                                    </NavLink>
-                                    <td className='text-center text-lg font-medium py-6 '>${element.price}</td>
-                                    <td className='text-center py-6 '>
-                                        <div className='flex gap-2 justify-center items-center'>
-                                            <button onClick={() => element.quantity > 1 ? dispatch(decrementItem(element)) : dispatch(removeFromCart(element))} className='px-3 py-1 hover:scale-110 active:text-blue-500'><i class="fa-solid fa-minus"></i></button>
-                                            <p className='font-medium text-xl border-2 px-2'> {element.quantity}</p>
-                                            <button onClick={() => dispatch(incrementItem(element))} className='px-3 py-1 hover:scale-110 active:text-blue-500'><i class="fa-solid fa-plus"></i></button>
-                                        </div>
-                                    </td>
-                                    <td className='text-center text-lg font-medium py-6'>${Math.floor(element.quantity * element.price * 100) / 100}</td>
-                                    <td className='text-center py-6 text-xl '><i onClick={() => dispatch(removeFromCart(element))} class="fa-solid fa-xmark p-2 hover:scale-110 active:text-blue-500"></i></td>
-                                </tr>
-                            })}
+                                if (matchedProducts) {
+                                    return <tr key={i}>
+                                        <NavLink to={`/shop/${matchedProducts.id}`}><td className='flex items-center gap-3 my-6'>
+                                            <div className='h-[7rem] max-md:h-[6rem] max-md:w-[6rem] w-[7rem] flex justify-center max-md:p-1 p-2 border-2'><img src={matchedProducts?.image} className='object-contain object-center w-full' alt="img" /></div>
+                                            <div>
+                                                <h4 className='max-sm:text-base max-sm:leading-5 text-lg font-medium w-[30vw] line-clamp-2'>{matchedProducts?.title}</h4>
+                                                <h5 className='max-sm:leading-5 font-medium text-gray-600'>{matchedProducts?.category}</h5>
+
+                                            </div>
+                                        </td>
+                                        </NavLink>
+                                        <td className='text-center text-lg font-medium py-6 '>${matchedProducts.price}</td>
+                                        <td className='text-center py-6 '>
+                                            <div className='flex gap-2 justify-center items-center'>
+                                                <button onClick={() => dispatch(decrementQuantity({ product_id: matchedProducts.id, quantity: 1 }))} className='px-3 py-1 hover:scale-110 active:text-blue-500'><i class="fa-solid fa-minus"></i></button>
+                                                <p className='font-medium text-xl border-2 px-2'> {element.quantity}</p>
+                                                <button onClick={() => dispatch(incrementQuantity({ product_id: matchedProducts.id, quantity: 1 }))} className='px-3 py-1 hover:scale-110 active:text-blue-500'><i class="fa-solid fa-plus"></i></button>
+                                            </div>
+                                        </td>
+                                        <td className='text-center text-lg font-medium py-6'>${Math.floor(element.quantity * matchedProducts.price * 100) / 100}</td>
+                                        <td className='text-center py-6 text-xl '><i onClick={() => dispatch(removeFromCart(matchedProducts.id))} class="fa-solid fa-xmark p-2 hover:scale-110 active:text-blue-500"></i></td>
+                                    </tr>
+                                }
+                                return null
+                            })
+                            }
                         </tbody>
                     </table>
                 </div>
