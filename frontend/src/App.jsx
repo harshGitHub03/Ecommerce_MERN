@@ -1,3 +1,5 @@
+import "./index.css"
+
 import React, { useEffect, useState } from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 
