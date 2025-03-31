@@ -8,7 +8,6 @@ const { validationResult } = require("express-validator");
 // add to cart
 exports.addToCart = async (req, res) => {
     const { user_id, product_id, quantity, price } = req.body;
-    console.log(req.body)
 
     //validate user input / 400 bad request!
     const errors = validationResult(req)
@@ -105,7 +104,6 @@ exports.removeFromCart = async (req, res) => {
 //increase quantity 
 exports.increaseQuantity = async (req, res) => {
     const { user_id, product_id, quantity } = req.body;
-    console.log(req.body)
     //validate fields through express-validator
     const errors = validationResult(req)
     if (!errors.isEmpty())

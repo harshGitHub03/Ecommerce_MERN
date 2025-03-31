@@ -7,7 +7,6 @@ const { response } = require("express");
 
 //update user Details
 exports.updateUserDetails = async (req, res) => {
-    console.log("req.body", req.body)
     try {
         //validationResult 400
         const errors = validationResult(req);
@@ -58,7 +57,6 @@ exports.updateUserDetails = async (req, res) => {
 // userAddress controller
 exports.insertUserAddress = async (req, res) => {
     const { user_id, addresses } = req.body;
-    console.log(addresses)
     try {
         //check for validation errors 
         const errors = validationResult(req);
@@ -145,7 +143,6 @@ exports.registration = async (req, res) => {
         const result = await registeredData.save()
 
         const { password, ...filteredDetails } = result._doc;
-        console.log("filtered details", filteredDetails)
 
         //generate jwt token
         const token = await result.generateToken()
@@ -197,13 +194,9 @@ exports.login = async (req, res) => {
 
         //destructure response
         const { password, ...filteredDetails } = response._doc;
-        console.log("filtered details", filteredDetails)
 
         //check if password is correct
-        console.log(inputPassword)
-        console.log(response.password)
         const passwordCheck = await bcrypt.compare(inputPassword, response.password)
-        console.log(passwordCheck)
         if (passwordCheck) {
             //if password correct
             //gen token

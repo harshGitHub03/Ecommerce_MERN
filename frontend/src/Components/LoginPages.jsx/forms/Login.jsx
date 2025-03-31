@@ -34,7 +34,6 @@ function Login() {
     //to close signUp form on click outside area
     const ref = useRef()
     useEffect(() => {
-        console.log("hi")
         const handler = (e) => {
             // Check if click is outside the popup (ref element)
             if (!ref.current.contains(e.target)) {

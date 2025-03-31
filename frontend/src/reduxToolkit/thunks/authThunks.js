@@ -19,7 +19,6 @@ export const updateUserDetails = createAsyncThunk("/user/updateDetails",
             return rejectWithValue({ message: "token not found!", response: null })
         }
         try {
-            console.log(getState())
             const { user } = getState().authData;
 
             if (!user) //if user not logged in
@@ -35,7 +34,6 @@ export const updateUserDetails = createAsyncThunk("/user/updateDetails",
                 body: JSON.stringify(updatedProcessedData)
             })
             const response = await serverResponse.json()
-            console.log(response)
 
             //if response.ok
             if (serverResponse.ok || serverResponse.status === 200) {
@@ -59,7 +57,6 @@ export const updateUserDetails = createAsyncThunk("/user/updateDetails",
 //insert User Addresses
 export const insertUserAddress = createAsyncThunk("/user/updateAddresses",
     async (data, { getState, rejectWithValue, dispatch }) => {
-        console.log(data)
         const { addresses, setEditAddressesToggle } = data;
 
         // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
@@ -86,7 +83,6 @@ export const insertUserAddress = createAsyncThunk("/user/updateAddresses",
                 })
             })
             const response = await serverResponse.json();
-            console.log(response)
 
             //if response.ok
             if (serverResponse.ok || serverResponse.status === 200) {
@@ -195,7 +191,6 @@ export const login = createAsyncThunk(
                 body: JSON.stringify(userInput)
             })
             const response = await serverResponse.json();
-            console.log(response)
 
             //on jsonRes is "ok" and status 200
             if (serverResponse.ok || serverResponse.status === 200) {
@@ -234,7 +229,6 @@ export const registration = createAsyncThunk("auth/register",
                 body: JSON.stringify(userInput)
             })
             const response = await serverResponse.json()
-            console.log(response)
 
             //on jsonRes is "ok" and status 200
             if (serverResponse.ok || serverResponse.status === 200) {
