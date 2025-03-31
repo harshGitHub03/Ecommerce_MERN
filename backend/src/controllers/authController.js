@@ -154,8 +154,9 @@ exports.registration = async (req, res) => {
         res.cookie("jwt", token, {
             secure: true,
             sameSite: "none",
-            maxAge: 60 * 60 * 1000
-        }); // expire in 1 hour
+            maxAge: 60 * 60 * 1000,
+            domain: process.env.COOKIE_DOMAIN
+        }) // expire in 1 hour
         return res.status(200).json({
             message: "account registered successfully!",
             request: "accepted!",
@@ -209,8 +210,9 @@ exports.login = async (req, res) => {
             res.cookie("jwt", token, {
                 secure: true,
                 sameSite: "none",
-                maxAge: 60 * 60 * 1000
-            }); // expire in 1 hour
+                maxAge: 60 * 60 * 1000,
+                domain: process.env.COOKIE_DOMAIN
+            }) // expire in 1 hour
             return res.status(200).json({
                 message: "user logged in!",
                 response: filteredDetails
