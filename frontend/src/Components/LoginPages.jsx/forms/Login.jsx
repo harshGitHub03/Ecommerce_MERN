@@ -69,7 +69,7 @@ function Login() {
                         </label>
                         <span className='text-sm text-red-600'>{passwordError?.msg || null}</span>
                     </div>
-                    <button className='bg-gray-400 text-lg font-medium text-black py-1 mt-2'>{loading ? "loading..." : 'sign In'}</button>
+                    <button type='submit' className='bg-gray-400 text-lg font-medium text-black py-1 mt-2'>{loading ? "loading..." : 'sign In'}</button>
                 </form>
                 <div className='text-sm flex w-full justify-between'>
                     <span className='text-gray-400'>dosen't have an account?</span>

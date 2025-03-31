@@ -89,7 +89,7 @@ function Registration() {
                         <span className='text-sm text-red-600'>{confirmPasswordError?.msg || null}</span>
                     </div>
 
-                    <button className='bg-gray-400 text-lg font-medium text-black py-1 mt-2'>{loading ? "loading..." : "sign up"}</button>
+                    <button type='submit' className='bg-gray-400 text-lg font-medium text-black py-1 mt-2'>{loading ? "loading..." : "sign up"}</button>
                 </form>
                 <div className='text-sm flex w-full justify-between'>
                     <span className='text-gray-400'>dosen't have an account?</span>
