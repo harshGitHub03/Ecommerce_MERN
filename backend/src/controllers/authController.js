@@ -152,10 +152,11 @@ exports.registration = async (req, res) => {
 
         //response send
         res.cookie("jwt", token, {
-            secure: true,
-            sameSite: "None",
-            maxAge: 60 * 60 * 1000
-        }) // expire in 1 hour
+            secure: true,           // Cookie will only be sent over HTTPS
+            sameSite: "None",      // Required for cross-site cookies (needed for cross-origin requests)
+            expires: new Date(Date.now() + 3600000),  // Cookie will expire in 1 hour
+            path: "/",             // Cookie is available for the entire site
+        });
         return res.status(200).json({
             message: "account registered successfully!",
             request: "accepted!",
@@ -207,10 +208,11 @@ exports.login = async (req, res) => {
 
             //if accound found on mongo
             res.cookie("jwt", token, {
-                secure: true,
-                sameSite: "none",
-                maxAge: 60 * 60 * 1000
-            }) // expire in 1 hour
+                secure: true,           // Cookie will only be sent over HTTPS
+                sameSite: "None",      // Required for cross-site cookies (needed for cross-origin requests)
+                expires: new Date(Date.now() + 3600000),  // Cookie will expire in 1 hour
+                path: "/",             // Cookie is available for the entire site
+            });
             return res.status(200).json({
                 message: "user logged in!",
                 response: filteredDetails
