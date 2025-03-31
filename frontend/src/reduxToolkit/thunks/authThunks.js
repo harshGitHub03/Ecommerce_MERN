@@ -125,7 +125,6 @@ export const signOutUser = createAsyncThunk("/auth/signOut",
 export const verifyAuthToken = createAsyncThunk("auth/verifyToken",
     async (_, { rejectWithValue, dispatch }) => {//important to get "data"(_) in argument to get {rejectWithValue, dispatch }
         const token = Cookie.get("jwt")
-        alert(token)
         if (!token)
             return rejectWithValue("Token not found in the cookie.")
 
