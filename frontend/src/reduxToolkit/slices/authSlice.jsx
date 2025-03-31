@@ -26,7 +26,6 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         //updateUserDetails FULLFILLED
         builder.addCase(updateUserDetails.fulfilled, (state, action) => {
-            console.log("payload", action.payload)
             state.user = action.payload.response
             toast(action.payload.message)
             state.error = false
@@ -36,7 +35,6 @@ const authSlice = createSlice({
 
         //inser User Addresses
         builder.addCase(insertUserAddress.fulfilled, (state, action) => {
-            console.log("payload1", action.payload)
             state.user.addresses = action.payload.response.updatedAddresses || []; // incase updated address not present, it'll assign empty array
             toast(action.payload.message)
             state.error = false
@@ -55,7 +53,6 @@ const authSlice = createSlice({
 
         //on tokenVerify fullfilled
         builder.addCase(verifyAuthToken.fulfilled, (state, action) => {
-            console.log(action.payload)
             const { isAuthorized, message, response } = action?.payload;
             const { cart, ...userData } = response // exclude cart data
 
@@ -101,7 +98,6 @@ const authSlice = createSlice({
 
         //updateUserDetails,verifyToken, login and registration REJECTED
         builder.addCase(updateUserDetails.rejected, (state, action) => {
-            console.log("on update rejected", action.payload)
             const { code, message, response } = action?.payload
             state.error = response?.errors || null
             state.errorCode = code || null
@@ -110,7 +106,6 @@ const authSlice = createSlice({
         })
 
         builder.addCase(insertUserAddress.rejected, (state, action) => {
-            console.log("on address rejected", action.payload)
             const { code, message, response } = action?.payload
             state.error = response?.errors || null
             state.errorCode = code || null
@@ -123,7 +118,6 @@ const authSlice = createSlice({
         })
 
         builder.addCase(verifyAuthToken.rejected, (state, action) => {
-            console.log(action.payload)
             state.error = action.payload || "Auth Error!"
             state.loading = false
             state.isAuthenticated = false;
@@ -133,19 +127,16 @@ const authSlice = createSlice({
         })
 
         builder.addCase(login.rejected, (state, action) => {
-            console.log("inside rejected", action.payload)
             state.isAuthenticated = false;
             state.loading = false;
             state.error = action.payload.response?.errors || action.payload.message;
             toast.error(action.payload.message)
-            console.log("errors", state.error)
         })
         builder.addCase(registration.rejected, (state, action) => {
             state.isAuthenticated = false;
             state.loading = false;
             state.error = action.payload.response?.errors || action.payload.message;
             toast.error(action.payload.message)
-            console.log("error", state.error)
         })
     }
 });
