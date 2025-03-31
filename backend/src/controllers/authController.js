@@ -153,7 +153,7 @@ exports.registration = async (req, res) => {
         //response send
         res.cookie("jwt", token, {
             secure: true,
-            sameSite: "none",
+            sameSite: "None",
             maxAge: 60 * 60 * 1000,
             domain: process.env.COOKIE_DOMAIN
         }) // expire in 1 hour
