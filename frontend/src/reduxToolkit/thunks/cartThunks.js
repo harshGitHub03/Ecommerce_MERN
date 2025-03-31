@@ -10,8 +10,10 @@ export const addToCart = createAsyncThunk("cart/addItem",
         const { productDetails, navigate } = data
         const { product_id, quantity, price } = productDetails;
 
-        //capture token
-        const token = Cookie.get("jwt");
+        // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+        // const token = Cookie.get("jwt")
+
+        const token = sessionStorage.getItem("token"); //have to use sessionstorage to store token , cookie dosen't work while deploying on sites as render.com etc "public suffix list issue"
         if (!token) { //if token not found
             setTimeout(() => navigate("/login"), 100) //state change occurs after the action completes, and navigation needs to occur only after the async action is finished (i.e., after the state is updated).
             return rejectWithValue("Login to add!")
@@ -69,7 +71,10 @@ export const addToCart = createAsyncThunk("cart/addItem",
 //remove product from cart
 export const removeFromCart = createAsyncThunk("cart/removeItem",
     async (product, { getState, rejectWithValue, dispatch }) => {
-        const token = Cookie.get("jwt");
+        // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+        // const token = Cookie.get("jwt")
+
+        const token = sessionStorage.getItem("token"); //have to use sessionstorage to store token , cookie dosen't work while deploying on sites as render.com etc "public suffix list issue"
         if (!token) //if token not found
             return rejectWithValue("Login to remove!")
 
@@ -127,7 +132,10 @@ export const removeFromCart = createAsyncThunk("cart/removeItem",
 export const incrementQuantity = createAsyncThunk(
     "cart/incrementQuantity",
     async (product, { getState, rejectWithValue, dispatch }) => {
-        const token = Cookie.get("jwt");
+        // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+        // const token = Cookie.get("jwt")
+
+        const token = sessionStorage.getItem("token"); //have to use sessionstorage to store token , cookie dosen't work while deploying on sites as render.com etc "public suffix list issue"
         if (!token) //if token not found
             return rejectWithValue("Login to increment!")
 
@@ -185,8 +193,10 @@ export const decrementQuantity = createAsyncThunk(
     "cart/decrementQuantity",
     async (product, { getState, rejectWithValue, dispatch }) => {
 
-        //check for jwt  token
-        const token = Cookie.get("jwt");
+        // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+        // const token = Cookie.get("jwt")
+
+        const token = sessionStorage.getItem("token"); //have to use sessionstorage to store token , cookie dosen't work while deploying on sites as render.com etc "public suffix list issue"
         if (!token) {//if token not found
             return rejectWithValue("Login to decrement!")
         }

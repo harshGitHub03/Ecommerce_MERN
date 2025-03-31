@@ -10,8 +10,10 @@ export const updateUserDetails = createAsyncThunk("/user/updateDetails",
         const { processedData, toggleEditProfile, navigate } = data;
         const { setEditButton, editButton } = toggleEditProfile; //to toggle profile edit(open/close)
 
-        const token = Cookie.get("jwt") //get token
+        // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+        // const token = Cookie.get("jwt")
 
+        const token = sessionStorage.getItem("token"); //have to use sessionstorage to store token , cookie dosen't work while deploying on sites as render.com etc "public suffix list issue"
         if (!token) { // if jwt token not found "expired or deleted"
             dispatch(signOutUser(navigate))
             return rejectWithValue({ message: "token not found!", response: null })
@@ -58,9 +60,12 @@ export const updateUserDetails = createAsyncThunk("/user/updateDetails",
 export const insertUserAddress = createAsyncThunk("/user/updateAddresses",
     async (data, { getState, rejectWithValue, dispatch }) => {
         console.log(data)
-        const {addresses,setEditAddressesToggle}=data;
+        const { addresses, setEditAddressesToggle } = data;
 
-        const token = Cookie.get("jwt")
+        // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+        // const token = Cookie.get("jwt")
+
+        const token = sessionStorage.getItem("token"); //have to use sessionstorage to store token , cookie dosen't work while deploying on sites as render.com etc "public suffix list issue"
         if (!token) //if token not found / might get expired or deleted!
             return rejectWithValue({ message: "token not found!", response: null })
 
@@ -85,7 +90,7 @@ export const insertUserAddress = createAsyncThunk("/user/updateAddresses",
 
             //if response.ok
             if (serverResponse.ok || serverResponse.status === 200) {
-                setEditAddressesToggle((prev)=>!prev) //close editAddress component on success
+                setEditAddressesToggle((prev) => !prev) //close editAddress component on success
                 return response
             } else {
                 //on status code 404||401 error
@@ -106,11 +111,18 @@ export const insertUserAddress = createAsyncThunk("/user/updateAddresses",
 //SIGN OUT user Thunk
 export const signOutUser = createAsyncThunk("/auth/signOut",
     (navigate, { rejectWithValue, dispatch }) => {
-        //check if cookie exists
-        const isToken = Cookie.get("jwt")
+
+        // const isToken = Cookie.get("jwt")
+        
+        // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+        const isToken = sessionStorage.getItem("token");//have to use sessionstorage to store token , cookie dosen't work while deploying on sites as render.com etc "public suffix list issue"
 
         if (isToken) {
-            Cookie.remove("jwt") //remove token
+            // Cookie.remove("jwt") //remove token 
+
+            // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+            sessionStorage.removeItem("token"); //have to use sessionstorage to store token , cookie dosen't work while deploying on sites as render.com etc "public suffix list issue"
+
             dispatch(clearCartData()) //clear cart
             navigate("/")
             return { message: "User Signed Out successfully!" }
@@ -124,7 +136,11 @@ export const signOutUser = createAsyncThunk("/auth/signOut",
 //token authentication on reload
 export const verifyAuthToken = createAsyncThunk("auth/verifyToken",
     async (_, { rejectWithValue, dispatch }) => {//important to get "data"(_) in argument to get {rejectWithValue, dispatch }
-        const token = Cookie.get("jwt")
+
+        // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+        // const token = Cookie.get("jwt")
+
+        const token = sessionStorage.getItem("token"); //have to use sessionstorage to store token , cookie dosen't work while deploying on sites as render.com etc "public suffix list issue"
         if (!token)
             return rejectWithValue("Token not found in the cookie.")
 

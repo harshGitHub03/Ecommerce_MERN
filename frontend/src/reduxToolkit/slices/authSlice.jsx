@@ -10,7 +10,8 @@ const authSlice = createSlice({
         user: null,
         loading: true,
         error: false,
-        errorCode: null
+        errorCode: null,
+        token: null
     },
     reducers: {
         // login:(state,action)=>{
@@ -72,6 +73,9 @@ const authSlice = createSlice({
             state.error = false
             state.loading = false
             toast.success(action.payload.message)
+
+        // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+            sessionStorage.setItem("token", action.payload.token)
         });
 
         //on registration fullfilled
@@ -82,6 +86,9 @@ const authSlice = createSlice({
             state.error = false
             state.loading = false
             toast.success(action.payload.message)
+
+            // ** because of public suffix list issue , setting token on session storage "study purpose", restriction happens because you can't set cookies for a domain like .render.com. The solution is to use a custom domain (e.g., yourdomain.com) or session storage, which allows you to set cookies across subdomains without the PSL limitation.
+            sessionStorage.setItem("token", action.payload.token)
         });
 
         //updateUserDetails, verifyToken, login and registration PENDING 
@@ -98,7 +105,7 @@ const authSlice = createSlice({
             const { code, message, response } = action?.payload
             state.error = response?.errors || null
             state.errorCode = code || null
-            state.loading=false;
+            state.loading = false;
             toast(message)
         })
 
@@ -107,7 +114,7 @@ const authSlice = createSlice({
             const { code, message, response } = action?.payload
             state.error = response?.errors || null
             state.errorCode = code || null
-            state.loading=false
+            state.loading = false
             toast(message)
         })
 

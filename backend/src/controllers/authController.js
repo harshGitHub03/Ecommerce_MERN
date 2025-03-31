@@ -151,16 +151,19 @@ exports.registration = async (req, res) => {
         const token = await result.generateToken()
 
         //response send
-        res.cookie("jwt", token, {
-            secure: true,           // Cookie will only be sent over HTTPS
-            sameSite: "None",      // Required for cross-site cookies (needed for cross-origin requests)
-            expires: new Date(Date.now() + 3600000),  // Cookie will expire in 1 hour
-            path: "/",             // Cookie is available for the entire site
-        });
+        // ** using subdomain as render.com to deploy dosen't allow cookies to set on frontend **
+        // res.cookie("jwt", token, {
+        //     secure: true,           // Cookie will only be sent over HTTPS
+        //     sameSite: "None",      // Required for cross-site cookies (needed for cross-origin requests)
+        //     expires: new Date(Date.now() + 3600000),  // Cookie will expire in 1 hour
+        //     path: "/",             // Cookie is available for the entire site
+        // });
         return res.status(200).json({
             message: "account registered successfully!",
             request: "accepted!",
-            response: filteredDetails
+            response: filteredDetails,
+            token
+
         })
     } catch (error) {
         //in case of server errors    
@@ -207,15 +210,19 @@ exports.login = async (req, res) => {
             const token = await response.generateToken();
 
             //if accound found on mongo
-            res.cookie("jwt", token, {
-                secure: true,           // Cookie will only be sent over HTTPS
-                sameSite: "None",      // Required for cross-site cookies (needed for cross-origin requests)
-                expires: new Date(Date.now() + 3600000),  // Cookie will expire in 1 hour
-                path: "/",             // Cookie is available for the entire site
-            });
+
+            // ** using subdomain as render.com to deploy dosen't allow cookies to set on frontend **
+            
+            // res.cookie("jwt", token, {
+            //     secure: true,           // Cookie will only be sent over HTTPS
+            //     sameSite: "None",      // Required for cross-site cookies (needed for cross-origin requests)
+            //     expires: new Date(Date.now() + 3600000),  // Cookie will expire in 1 hour
+            //     path: "/",             // Cookie is available for the entire site
+            // });
             return res.status(200).json({
                 message: "user logged in!",
-                response: filteredDetails
+                response: filteredDetails,
+                token
             })
 
         } else {
