@@ -26,5 +26,3 @@ This project demonstrates my ability to work with modern web technologies to bui
   - MongoDB (for the database)
   - JWT (JSON Web Tokens) for user authentication
 
-### Backend server Link
-   https://ecommerce-mern-y05s.onrender.com
